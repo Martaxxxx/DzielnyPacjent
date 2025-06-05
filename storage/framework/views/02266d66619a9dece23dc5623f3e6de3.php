@@ -57,11 +57,11 @@
                 <i data-lucide="arrow-left" class="w-4 h-4"></i> Wróć do listy
             </a>
 
-            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded flex items-center gap-2">
+            <button type="submit" class="bg-[#7ac759] hover:bg-green-700 text-white px-4 py-2 rounded flex items-center gap-2">
                 <i data-lucide="save" class="w-5 h-5"></i> Zapisz zmiany
             </button>
 
-            <a href="<?php echo e(route('vet.recepta', $appointment->id)); ?>" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded flex items-center gap-2 print:hidden">
+            <a href="<?php echo e(route('vet.recepta', $appointment->id)); ?>" target="_blank" class="bg-[#8B5CF6]  hover:bg-blue-700 text-white px-4 py-2 rounded flex items-center gap-2 print:hidden">
                 <i data-lucide="printer" class="w-5 h-5"></i> Drukuj receptę
             </a>
         </div>

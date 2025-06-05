@@ -1,0 +1,72 @@
+<?php
+
+return [
+
+    'accepted'             => ':attribute musi zostać zaakceptowane.',
+    'active_url'           => ':attribute nie jest prawidłowym adresem URL.',
+    'after'                => ':attribute musi być datą późniejszą niż :date.',
+    'after_or_equal'       => ':attribute musi być datą nie wcześniejszą niż :date.',
+    'alpha'                => ':attribute może zawierać tylko litery.',
+    'alpha_dash'           => ':attribute może zawierać tylko litery, cyfry i myślniki.',
+    'alpha_num'            => ':attribute może zawierać tylko litery i cyfry.',
+    'array'                => ':attribute musi być tablicą.',
+    'before'               => ':attribute musi być datą wcześniejszą niż :date.',
+    'before_or_equal'      => ':attribute musi być datą nie późniejszą niż :date.',
+    'between'              => [
+        'numeric' => ':attribute musi zawierać się między :min i :max.',
+        'file'    => ':attribute musi mieć rozmiar między :min a :max kilobajtów.',
+        'string'  => ':attribute musi zawierać się między :min a :max znaków.',
+        'array'   => ':attribute musi mieć między :min a :max elementów.',
+    ],
+    'boolean'              => 'Pole :attribute musi być prawdą albo fałszem.',
+    'confirmed'            => 'Potwierdzenie pola :attribute nie pasuje.',
+    'date'                 => ':attribute nie jest poprawną datą.',
+    'date_equals'          => ':attribute musi być datą równą :date.',
+    'date_format'          => ':attribute nie pasuje do format :format.',
+    'different'            => ':attribute i :other muszą być różne.',
+    'digits'               => ':attribute musi mieć :digits cyfr.',
+    'digits_between'       => ':attribute musi mieć między :min a :max cyfr.',
+    'email'                => ':attribute musi być poprawnym adresem email.',
+    'exists'               => 'Wybrany :attribute jest nieprawidłowy.',
+    'file'                 => ':attribute musi być plikiem.',
+    'filled'               => 'Pole :attribute jest wymagane.',
+    'image'                => ':attribute musi być obrazkiem.',
+    'in'                   => 'Wybrany :attribute jest nieprawidłowy.',
+    'integer'              => ':attribute musi być liczbą całkowitą.',
+    'max'                  => [
+        'numeric' => ':attribute nie może być większy niż :max.',
+        'file'    => ':attribute nie może być większy niż :max kilobajtów.',
+        'string'  => ':attribute nie może mieć więcej niż :max znaków.',
+        'array'   => ':attribute nie może mieć więcej niż :max elementów.',
+    ],
+    'min'                  => [
+        'numeric' => ':attribute musi mieć przynajmniej :min.',
+        'file'    => ':attribute musi mieć przynajmniej :min kilobajtów.',
+        'string'  => ':attribute musi mieć przynajmniej :min znaków.',
+        'array'   => ':attribute musi mieć przynajmniej :min elementów.',
+    ],
+    'not_in'               => 'Wybrany :attribute jest nieprawidłowy.',
+    'numeric'              => ':attribute musi być liczbą.',
+    'required'             => 'Pole :attribute jest wymagane.',
+    'same'                 => ':attribute i :other muszą się zgadzać.',
+    'size'                 => [
+        'numeric' => ':attribute musi mieć :size.',
+        'file'    => ':attribute musi mieć :size kilobajtów.',
+        'string'  => ':attribute musi mieć :size znaków.',
+        'array'   => ':attribute musi zawierać :size elementów.',
+    ],
+    'string'               => ':attribute musi być ciągiem znaków.',
+    'unique'               => ':attribute już istnieje.',
+    'url'                  => 'Format :attribute jest nieprawidłowy.',
+    'regex'                => 'Format pola :attribute jest nieprawidłowy.',
+    'confirmed'            => 'Potwierdzenie pola :attribute nie pasuje.',
+
+    // Custom attributes (np. przetłumacz nazwy pól)
+    'attributes' => [
+        'name' => 'imię i nazwisko',
+        'email' => 'adres e-mail',
+        'password' => 'hasło',
+        'password_confirmation' => 'potwierdzenie hasła',
+    ],
+
+];

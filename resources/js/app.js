@@ -15,7 +15,8 @@ import {
     LogOut,
     Search,
     UserPlus,
-    ClipboardCheck
+    ClipboardCheck,
+    Delete
 } from 'lucide';
 
 // Inicjalizacja Alpine.js
@@ -34,7 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
             LogOut,
             Search,
             UserPlus,
-            ClipboardCheck
+            ClipboardCheck,
+            Delete
         }
     });
 

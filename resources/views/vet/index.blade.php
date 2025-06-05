@@ -4,8 +4,10 @@
 
 @section('content')
 <div class="relative min-h-screen bg-cover bg-center" style="background-image: url('/img/2.png');">
+    <!-- Przyciemnienie tła -->
+    <div class="absolute inset-0 bg-black bg-opacity-30"></div>
 
-    <div class="max-w-6xl mx-auto mt-10 p-6 bg-white bg-opacity-90 dark:bg-gray-900 dark:bg-opacity-90 shadow rounded">
+    <div class="relative z-10 max-w-6xl mx-auto mt-10 p-6 bg-white bg-opacity-95 dark:bg-gray-900 dark:bg-opacity-95 shadow rounded">
         <h1 class="text-2xl font-bold mb-6 text-center text-gray-800 dark:text-white">Potwierdzone wizyty</h1>
 
         @if(session('success'))
@@ -14,9 +16,8 @@
             </div>
         @endif
 
-     <!-- Kalendarz wizyt -->
-<div id="calendar" class="mb-10 bg-white dark:bg-gray-800 p-4 rounded shadow border border-[#cb6ce6] text-sm leading-tight break-words"></div>
-
+        <!-- Kalendarz wizyt -->
+        <div id="calendar" class="mb-10 bg-white dark:bg-gray-800 p-4 rounded shadow border border-[#cb6ce6] text-sm leading-tight break-words"></div>
 
         <!-- Wyszukiwarka -->
         <form method="GET" class="mb-6 flex justify-end">

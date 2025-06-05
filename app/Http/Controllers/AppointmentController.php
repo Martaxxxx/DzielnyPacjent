@@ -26,14 +26,33 @@ class AppointmentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'owner_name' => 'required|string|max:200',
-            'pet_name' => 'required|string|max:200',
+            'owner_name' => 'required|string|max:30',
+            'pet_name' => 'required|string|max:30',
             'reason' => 'required|string',
-            'appointment_date' => 'required|date',
-            'phone' => 'required|string|max:20',
+            'appointment_date' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) {
+                    $time = \Carbon\Carbon::parse($value);
+                    if (!in_array($time->minute, [0, 30])) {
+                        $fail('Wizyty można umawiać wyłącznie co 30 minut (np. 10:00, 10:30).');
+                    }
+                }
+            ],
+            'phone' => 'required|string|max:12',
             'email' => 'required|email:rfc,dns',
         ]);
-
+    
+        // Sprawdzenie, czy termin jest już zajęty
+        $terminZajety = Appointment::where('appointment_date', $request->appointment_date)->exists();
+    
+        if ($terminZajety) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Wybrany termin jest już zajęty. Proszę wybrać inny.');
+        }
+    
+        // Zapisz wizytę
         $appointment = Appointment::create([
             'owner_name' => $request->owner_name,
             'pet_name' => $request->pet_name,
@@ -43,10 +62,12 @@ class AppointmentController extends Controller
             'email' => $request->email,
             'status' => 'pending',
         ]);
-
-        // ✉️ Wyślij e-mail z potwierdzeniem
-        Mail::to($appointment->email)->send(new WizytaZarejestrowanaMail($appointment));
-
+    
+        // Wyślij maila
+        Mail::to($appointment->email)->send(new \App\Mail\WizytaZarejestrowanaMail($appointment));
+    
+        return redirect()->back()->with('success', 'Wizyta została zapisana i e-mail potwierdzający wysłany.');
+    
         // ✅ Przekierowanie z komunikatem
         return redirect()->back()->with('success', 'Wizyta została zapisana i e-mail potwierdzający wysłany.');
     }

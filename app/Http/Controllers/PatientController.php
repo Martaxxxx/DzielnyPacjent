@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Appointment;
 use App\Mail\WizytaPotwierdzonaMail;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\WizytaOdrzuconaMail;
+
 
 class PatientController extends Controller
 {
@@ -14,7 +16,7 @@ class PatientController extends Controller
      */
     public function index(Request $request)
 {
-    if (auth()->user()->role !== 'recepcja') {
+    if (!in_array(auth()->user()->role, ['recepcja', 'admin'])) {
         abort(403, 'Brak dostępu.');
     }
 
@@ -28,6 +30,16 @@ class PatientController extends Controller
         ->get();
 
     return view('pacjenci.index', compact('appointments', 'search'));
+}
+public function reject($id)
+{
+    $appointment = Appointment::findOrFail($id);
+    $appointment->status = 'rejected';
+    $appointment->save();
+
+    Mail::to($appointment->email)->send(new WizytaOdrzuconaMail($appointment));
+
+    return redirect()->back()->with('success', 'Wizyta została odrzucona, e-mail został wysłany.');
 }
 
     /**
