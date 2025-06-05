@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\LoginLog;
 
@@ -20,13 +19,25 @@ class AdminController extends Controller
     }
 
     /**
-     * Lista wszystkich użytkowników.
+     * Lista wszystkich użytkowników z wyszukiwarką.
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorizeAdmin();
 
-        $users = User::all();
+        $users = User::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $users->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('role', 'like', "%{$search}%");
+            });
+        }
+
+        $users = $users->get();
+
         return view('admin.index', compact('users'));
     }
 
