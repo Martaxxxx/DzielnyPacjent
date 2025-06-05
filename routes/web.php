@@ -4,9 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\VetController;
+use App\Models\Appointment;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('dashboard');
 });
 
 // Dashboard (tylko dla zalogowanych + zweryfikowanych)
@@ -22,20 +24,23 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // 🐾 Pacjenci (dla recepcji, tymczasowo dla wszystkich zalogowanych)
+    // 🐾 Pacjenci (dla recepcji)
     Route::get('/pacjenci', [PatientController::class, 'index'])->name('pacjenci.index');
     Route::put('/pacjenci/{id}/potwierdz', [PatientController::class, 'confirm'])->name('pacjenci.potwierdz');
     Route::delete('/pacjenci/{id}', [PatientController::class, 'destroy'])->name('pacjenci.usun');
 
     // Wizyty (formularz + lista)
     Route::get('/wizyty', [AppointmentController::class, 'create'])->name('wizyty.umow');
-Route::post('/wizyty', [AppointmentController::class, 'store'])->name('wizyty.zapisz');
-});
+    Route::post('/wizyty', [AppointmentController::class, 'store'])->name('wizyty.zapisz');
 
-// dla weterynarza
-Route::middleware(['auth', 'role:weterynarz'])->group(function () {
-    Route::get('/wizyty/potwierdzone', [App\Http\Controllers\VetController::class, 'index'])->name('vet.wizyty');
-    Route::get('/wizyty/{id}/edytuj', [App\Http\Controllers\VetController::class, 'edit'])->name('vet.edytuj');
-    Route::post('/wizyty/{id}', [App\Http\Controllers\VetController::class, 'update'])->name('vet.zapisz');
+    // Vet - Panel weterynarza
+    Route::get('/vet', [VetController::class, 'index'])->name('vet.wizyty');
+    Route::get('/vet/{id}/edytuj', [VetController::class, 'edit'])->name('vet.edytuj');
+    Route::post('/vet/{id}', [VetController::class, 'update'])->name('vet.zapisz');
+    Route::get('/vet/{id}/recepta', [VetController::class, 'printPrescription'])->name('vet.recepta');
+
+
 });
+Route::get('/api/wizyty-json', [AppointmentController::class, 'json'])->name('wizyty.json');
+
 require __DIR__.'/auth.php';

@@ -7,48 +7,65 @@ use App\Models\Appointment;
 
 class VetController extends Controller
 {
-    /**
-     * Lista potwierdzonych wizyt
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $appointments = Appointment::where('status', 'confirmed')
-            ->orderBy('appointment_date')
-            ->get();
+        $query = Appointment::where('status', 'confirmed');
 
-        return view('weterynarz.index', compact('appointments'));
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('owner_name', 'like', "%{$search}%")
+                  ->orWhere('pet_name', 'like', "%{$search}%")
+                  ->orWhere('appointment_date', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhere('prescription', 'like', "%{$search}%")
+                  ->orWhere('animal_type', 'like', "%{$search}%")
+                  ->orWhere('breed', 'like', "%{$search}%")
+                  ->orWhere('age', 'like', "%{$search}%")
+                  ->orWhere('weight', 'like', "%{$search}%")
+                  ->orWhere('notes', 'like', "%{$search}%");
+            });
+        }
+
+        $appointments = $query->orderBy('appointment_date', 'asc')->get();
+
+        return view('vet.index', compact('appointments'));
     }
 
-    /**
-     * Formularz edycji wizyty
-     */
     public function edit($id)
     {
         $appointment = Appointment::findOrFail($id);
-
-        return view('weterynarz.edit', compact('appointment'));
+        return view('vet.edit', compact('appointment'));
     }
 
-    /**
-     * Zapis zmian w wizycie
-     */
     public function update(Request $request, $id)
     {
         $request->validate([
-            'description' => 'nullable|string',
-            'diagnosis' => 'nullable|string',
-            'recommendation' => 'nullable|string',
-            'prescription' => 'nullable|string',
+            'description'   => 'nullable|string',
+            'prescription'  => 'nullable|string',
+            'animal_type'   => 'nullable|string|max:100',
+            'breed'         => 'nullable|string|max:100',
+            'age'           => 'nullable|string|max:50',
+            'weight'        => 'nullable|string|max:50',
+            'notes'         => 'nullable|string|max:500',
         ]);
 
         $appointment = Appointment::findOrFail($id);
-        $appointment->update([
-            'description' => $request->description,
-            'diagnosis' => $request->diagnosis,
-            'recommendation' => $request->recommendation,
-            'prescription' => $request->prescription,
-        ]);
+        $appointment->description   = $request->description;
+        $appointment->prescription  = $request->prescription;
+        $appointment->animal_type   = $request->animal_type;
+        $appointment->breed         = $request->breed;
+        $appointment->age           = $request->age;
+        $appointment->weight        = $request->weight;
+        $appointment->notes         = $request->notes;
+        $appointment->save();
 
-        return redirect()->route('vet.wizyty')->with('success', 'Wizyta została zaktualizowana.');
+        return redirect()->route('vet.wizyty')->with('success', 'Dane wizyty zostały zapisane.');
+    }
+
+    public function printPrescription($id)
+    {
+        $appointment = Appointment::findOrFail($id);
+        return view('vet.prescription', compact('appointment'));
     }
 }

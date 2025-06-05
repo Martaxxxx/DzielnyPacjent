@@ -12,10 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('appointments', function (Blueprint $table) {
-  
-
-            $table->text('recommendation')->nullable();
-          
+            $table->string('animal_type')->nullable();      // np. kot, pies
+            $table->string('breed')->nullable();            // np. europejski krótkowłosy
+            $table->string('age')->nullable();              // np. 2 lata
+            $table->string('weight')->nullable();           // np. 4.5 kg
+            $table->text('notes')->nullable();              // dodatkowe informacje
         });
     }
 
@@ -25,7 +26,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('appointments', function (Blueprint $table) {
-            //
+            $table->dropColumn(['animal_type', 'breed', 'age', 'weight', 'notes']);
         });
     }
 };

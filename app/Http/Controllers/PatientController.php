@@ -13,18 +13,22 @@ class PatientController extends Controller
      * Wyświetlanie listy pacjentów z opcją wyszukiwania
      */
     public function index(Request $request)
-    {
-        $search = $request->input('search');
-
-        $appointments = Appointment::query()
-            ->when($search, function ($query, $search) {
-                return $query->where('pet_name', 'like', '%' . $search . '%');
-            })
-            ->orderBy('appointment_date', 'asc')
-            ->get();
-
-        return view('pacjenci.index', compact('appointments', 'search'));
+{
+    if (auth()->user()->role !== 'recepcja') {
+        abort(403, 'Brak dostępu.');
     }
+
+    $search = $request->input('search');
+
+    $appointments = Appointment::query()
+        ->when($search, function ($query, $search) {
+            return $query->where('pet_name', 'like', '%' . $search . '%');
+        })
+        ->orderBy('appointment_date', 'asc')
+        ->get();
+
+    return view('pacjenci.index', compact('appointments', 'search'));
+}
 
     /**
      * Potwierdzenie wizyty i wysłanie e-maila

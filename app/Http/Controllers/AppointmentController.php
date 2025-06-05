@@ -50,4 +50,20 @@ class AppointmentController extends Controller
         // ✅ Przekierowanie z komunikatem
         return redirect()->back()->with('success', 'Wizyta została zapisana i e-mail potwierdzający wysłany.');
     }
+
+    // 🔹 Endpoint dla kalendarza
+    public function json()
+    {
+        $appointments = Appointment::where('status', 'confirmed')->get();
+
+        $events = $appointments->map(function ($appointment) {
+            return [
+                'title' => $appointment->pet_name . ' - ' . $appointment->owner_name,
+                'start' => $appointment->appointment_date,
+                'url' => route('vet.edytuj', $appointment->id),
+            ];
+        });
+
+        return response()->json($events);
+    }
 }

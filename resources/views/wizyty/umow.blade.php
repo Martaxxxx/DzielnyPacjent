@@ -3,6 +3,7 @@
 @section('title', 'Umów wizytę')
 
 @section('content')
+<div class="relative min-h-screen bg-cover bg-center" style="background-image: url('/img/2.png');">
 <div class="max-w-xl mx-auto mt-10 bg-white dark:bg-gray-900 p-6 rounded shadow">
     <h2 class="text-2xl font-semibold mb-4 text-center">Formularz wizyty</h2>
 

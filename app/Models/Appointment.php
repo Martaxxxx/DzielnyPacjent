@@ -17,5 +17,12 @@ class Appointment extends Model
         'status',
         'email',
         'phone',
+        'description',    
+        'prescription',  
+        'animal_type',
+        'breed',
+        'age',
+        'weight',
+        'notes', 
     ];
 }

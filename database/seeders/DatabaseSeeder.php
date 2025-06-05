@@ -2,22 +2,42 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // 🔹 Seed użytkowników
+        User::create([
+            'name' => 'Recepcja',
+            'email' => 'recepcja@klinika.pl',
+            'password' => Hash::make('recepcja123'),
+            'role' => 'recepcja',
+            'email_verified_at' => now(),
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        User::create([
+            'name' => 'Dr Weterynarz',
+            'email' => 'weterynarz@klinika.pl',
+            'password' => Hash::make('weterynarz123'),
+            'role' => 'weterynarz',
+            'email_verified_at' => now(),
+        ]);
+
+        User::create([
+            'name' => 'Marta Kowalska',
+            'email' => 'marta@test.pl',
+            'password' => Hash::make('marta123'),
+            'role' => 'pacjent',
+            'email_verified_at' => now(),
+        ]);
+
+        // 🔹 Seed wizyt
+        $this->call([
+            ConfirmedAppointmentsSeeder::class,
         ]);
     }
 }
