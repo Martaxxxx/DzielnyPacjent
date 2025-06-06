@@ -12,17 +12,13 @@ class WizytaZarejestrowanaMail extends Mailable
 
     public $appointment;
 
-    /**
-     * Create a new message instance.
-     */
+   
     public function __construct($appointment)
     {
         $this->appointment = $appointment;
     }
 
-    /**
-     * Build the message.
-     */
+    
     public function build()
     {
         return $this->subject('Twoja wizyta oczekuje na potwierdzenie')

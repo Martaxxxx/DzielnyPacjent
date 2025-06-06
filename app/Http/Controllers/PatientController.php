@@ -38,7 +38,7 @@ class PatientController extends Controller
         return view('pacjenci.index', compact('pendingAppointments', 'otherAppointments', 'search'));
     }
 
-    /**
+    /*
      * Potwierdzenie wizyty i wysłanie e-maila
      */
     public function confirm($id)
@@ -52,7 +52,7 @@ class PatientController extends Controller
         return redirect()->back()->with('success', 'Wizyta została potwierdzona.');
     }
 
-    /**
+    /*
      * Odrzucenie wizyty i wysłanie e-maila
      */
     public function reject($id)
