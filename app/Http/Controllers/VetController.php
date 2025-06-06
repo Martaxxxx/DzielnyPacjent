@@ -24,10 +24,13 @@ class VetController extends Controller
                   ->orWhere('age', 'like', "%{$search}%")
                   ->orWhere('weight', 'like', "%{$search}%")
                   ->orWhere('notes', 'like', "%{$search}%");
+                  
             });
         }
 
         $appointments = $query->orderBy('appointment_date', 'asc')->get();
+        $appointments = $query->orderBy('appointment_date', 'asc')->paginate(10);
+
 
         return view('vet.index', compact('appointments'));
     }
@@ -68,4 +71,12 @@ class VetController extends Controller
         $appointment = Appointment::findOrFail($id);
         return view('vet.prescription', compact('appointment'));
     }
+    public function destroy($id)
+{
+    $appointment = Appointment::findOrFail($id);
+    $appointment->delete();
+
+    return redirect()->route('vet.wizyty')->with('success', 'Wizyta została usunięta.');
+}
+
 }

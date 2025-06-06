@@ -16,6 +16,20 @@
             </div>
         @endif
 
+        <!-- Wyszukiwarka -->
+        <form method="GET" class="mb-6 flex justify-end">
+            <input
+                type="text"
+                name="search"
+                placeholder="Szukaj użytkownika..."
+                value="{{ request('search') }}"
+                class="px-4 py-2 border rounded w-1/3"
+            >
+            <button type="submit" class="ml-2 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 flex items-center gap-2">
+                <i data-lucide="search" class="w-4 h-4"></i> Szukaj
+            </button>
+        </form>
+
         <div class="overflow-x-auto">
             <table class="w-full table-auto border-collapse text-sm rounded shadow-sm">
                 <thead class="bg-[#cb6ce6] text-white uppercase text-xs">
@@ -28,7 +42,7 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white dark:bg-gray-800">
-                    @foreach ($users as $user)
+                    @forelse ($users as $user)
                         <tr class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
                             <td class="p-3">{{ $user->id }}</td>
                             <td class="p-3">{{ $user->name }}</td>
@@ -46,7 +60,11 @@
                                 </form>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="5" class="p-4 text-center text-gray-500">Brak wyników.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

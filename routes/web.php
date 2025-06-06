@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/pacjenci', [PatientController::class, 'index'])->name('pacjenci.index');
     Route::put('/pacjenci/{id}/potwierdz', [PatientController::class, 'confirm'])->name('pacjenci.potwierdz');
     Route::put('/pacjenci/{id}/odrzuc', [PatientController::class, 'reject'])->name('pacjenci.odrzuc');
+
     Route::delete('/pacjenci/{id}', [PatientController::class, 'destroy'])->name('pacjenci.usun');
 
     //  Wizyty
@@ -54,5 +55,7 @@ Route::get('/api/wizyty-json', [AppointmentController::class, 'json'])->name('wi
 // historia logowań
 
 Route::get('/admin/uzytkownicy/{user}/logi', [AdminController::class, 'logs'])->name('admin.uzytkownicy.logi');
+Route::delete('/vet/{id}', [VetController::class, 'destroy'])->name('vet.usun');
+
 
 require __DIR__.'/auth.php';

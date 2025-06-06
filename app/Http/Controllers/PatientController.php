@@ -5,42 +5,31 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Appointment;
 use App\Mail\WizytaPotwierdzonaMail;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\WizytaOdrzuconaMail;
-
+use Illuminate\Support\Facades\Mail;
 
 class PatientController extends Controller
 {
     /**
-     * Wyświetlanie listy pacjentów z opcją wyszukiwania
+     * Wyświetlanie listy pacjentów z opcją wyszukiwania i paginacją
      */
     public function index(Request $request)
-{
-    if (!in_array(auth()->user()->role, ['recepcja', 'admin'])) {
-        abort(403, 'Brak dostępu.');
+    {
+        if (!in_array(auth()->user()->role, ['recepcja', 'admin'])) {
+            abort(403, 'Brak dostępu.');
+        }
+
+        $search = $request->input('search');
+
+        $appointments = Appointment::query()
+            ->when($search, function ($query, $search) {
+                return $query->where('pet_name', 'like', '%' . $search . '%');
+            })
+            ->orderBy('appointment_date', 'asc')
+            ->paginate(10);
+
+        return view('pacjenci.index', compact('appointments', 'search'));
     }
-
-    $search = $request->input('search');
-
-    $appointments = Appointment::query()
-        ->when($search, function ($query, $search) {
-            return $query->where('pet_name', 'like', '%' . $search . '%');
-        })
-        ->orderBy('appointment_date', 'asc')
-        ->get();
-
-    return view('pacjenci.index', compact('appointments', 'search'));
-}
-public function reject($id)
-{
-    $appointment = Appointment::findOrFail($id);
-    $appointment->status = 'rejected';
-    $appointment->save();
-
-    Mail::to($appointment->email)->send(new WizytaOdrzuconaMail($appointment));
-
-    return redirect()->back()->with('success', 'Wizyta została odrzucona, e-mail został wysłany.');
-}
 
     /**
      * Potwierdzenie wizyty i wysłanie e-maila
@@ -54,6 +43,20 @@ public function reject($id)
         Mail::to($appointment->email)->send(new WizytaPotwierdzonaMail($appointment));
 
         return redirect()->back()->with('success', 'Wizyta została potwierdzona.');
+    }
+
+    /**
+     * Odrzucenie wizyty i wysłanie e-maila
+     */
+    public function reject($id)
+    {
+        $appointment = Appointment::findOrFail($id);
+        $appointment->status = 'rejected';
+        $appointment->save();
+
+        Mail::to($appointment->email)->send(new WizytaOdrzuconaMail($appointment));
+
+        return redirect()->back()->with('success', 'Wizyta została odrzucona, e-mail został wysłany.');
     }
 
     /**

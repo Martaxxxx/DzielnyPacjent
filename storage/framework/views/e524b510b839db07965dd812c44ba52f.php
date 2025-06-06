@@ -29,15 +29,61 @@
             <?php endif; ?>
         </div>
 
-        <!-- Prawa: użytkownik + Wyloguj -->
+        <!-- Prawa: użytkownik + Wyloguj + DARK MODE -->
         <div class="hidden md:flex items-center gap-6 text-base font-medium ml-auto">
             <?php if(auth()->guard()->check()): ?>
                 <span class="text-gray-600 dark:text-white"><?php echo e(Auth::user()->name); ?></span>
+                <!-- Przełącznik dark mode -->
+                <button
+                    x-data="{ theme: localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') }"
+                    @click="
+                        theme = (theme === 'dark' ? 'light' : 'dark');
+                        document.documentElement.classList.toggle('dark', theme === 'dark');
+                        localStorage.setItem('theme', theme);
+                    "
+                    :aria-label="theme === 'dark' ? 'Tryb jasny' : 'Tryb ciemny'"
+                    class="ml-2 rounded-full p-2 transition bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white"
+                    :title="theme === 'dark' ? 'Przełącz na jasny' : 'Przełącz na ciemny'"
+                >
+                    <template x-if="theme === 'dark'">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8.66-8.66l-.71.71m-13.9 0l-.71-.71M21 12h-1M4 12H3m15.66-5.66l-.71-.71m-13.9 0l-.71.71M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                    </template>
+                    <template x-if="theme === 'light'">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" />
+                        </svg>
+                    </template>
+                </button>
                 <form action="<?php echo e(route('logout')); ?>" method="POST">
                     <?php echo csrf_field(); ?>
                     <button class="text-[#cb6ce6] hover:underline transition">Wyloguj</button>
                 </form>
             <?php else: ?>
+                <!-- Przełącznik dark mode dla niezalogowanych -->
+                <button
+                    x-data="{ theme: localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') }"
+                    @click="
+                        theme = (theme === 'dark' ? 'light' : 'dark');
+                        document.documentElement.classList.toggle('dark', theme === 'dark');
+                        localStorage.setItem('theme', theme);
+                    "
+                    :aria-label="theme === 'dark' ? 'Tryb jasny' : 'Tryb ciemny'"
+                    class="ml-2 rounded-full p-2 transition bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white"
+                    :title="theme === 'dark' ? 'Przełącz na jasny' : 'Przełącz na ciemny'"
+                >
+                    <template x-if="theme === 'dark'">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8.66-8.66l-.71.71m-13.9 0l-.71-.71M21 12h-1M4 12H3m15.66-5.66l-.71-.71m-13.9 0l-.71.71M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                    </template>
+                    <template x-if="theme === 'light'">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" />
+                        </svg>
+                    </template>
+                </button>
                 <a href="<?php echo e(route('login')); ?>" class="text-gray-700 hover:text-[#cb6ce6] transition">Zaloguj się</a>
                 <a href="<?php echo e(route('register')); ?>" class="text-gray-700 hover:text-[#cb6ce6] transition">Zarejestruj się</a>
             <?php endif; ?>
@@ -82,9 +128,26 @@
                 <button class="text-[#cb6ce6] hover:underline transition">Wyloguj</button>
             </form>
         <?php else: ?>
+            <!-- Przełącznik dark mode w menu mobilnym -->
+            <button
+    @click="theme = (theme === 'dark' ? 'light' : 'dark')"
+    :aria-label="theme === 'dark' ? 'Tryb jasny' : 'Tryb ciemny'"
+    class="ml-2 rounded-full p-2 transition bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white"
+    :title="theme === 'dark' ? 'Przełącz na jasny' : 'Przełącz na ciemny'"
+>
+    <template x-if="theme === 'dark'">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8.66-8.66l-.71.71m-13.9 0l-.71-.71M21 12h-1M4 12H3m15.66-5.66l-.71-.71m-13.9 0l-.71.71M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+    </template>
+    <template x-if="theme === 'light'">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" />
+        </svg>
+    </template>
+</button>
             <a href="<?php echo e(route('login')); ?>" class="text-gray-700 hover:text-[#cb6ce6] transition">Zaloguj się</a>
             <a href="<?php echo e(route('register')); ?>" class="text-gray-700 hover:text-[#cb6ce6] transition">Zarejestruj się</a>
         <?php endif; ?>
     </div>
-</nav>
-<?php /**PATH C:\xampp\htdocs\rejestr_zwierzat\resources\views/layouts/navigation.blade.php ENDPATH**/ ?>
+</nav><?php /**PATH C:\xampp\htdocs\rejestr_zwierzat\resources\views/layouts/navigation.blade.php ENDPATH**/ ?>

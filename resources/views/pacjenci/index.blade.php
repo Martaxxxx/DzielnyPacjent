@@ -4,7 +4,6 @@
 
 @section('content')
 <div class="relative min-h-screen bg-cover bg-center" style="background-image: url('/img/2.png');">
-    <!-- Warstwa przyciemnienia -->
     <div class="absolute inset-0 bg-black bg-opacity-30"></div>
 
     <div class="relative z-10 max-w-6xl mx-auto mt-10 p-6 bg-white bg-opacity-95 dark:bg-gray-900 dark:bg-opacity-95 shadow rounded">
@@ -22,7 +21,7 @@
                 type="text"
                 name="search"
                 placeholder="Szukaj po imieniu zwierzaka..."
-                value="{{ $search ?? '' }}"
+                value="{{ request('search') }}"
                 class="px-4 py-2 border rounded w-1/3"
             >
             <button type="submit" class="ml-2 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">
@@ -30,7 +29,7 @@
             </button>
         </form>
 
-        <!-- Tabela 1: Do akceptacji -->
+        <!-- Tabela: Do akceptacji -->
         <h2 class="text-xl font-semibold mb-3 mt-4 text-indigo-700">Do akceptacji</h2>
         <table class="w-full table-auto border-collapse text-sm mb-10">
             <thead>
@@ -52,31 +51,30 @@
                             <form action="{{ route('pacjenci.potwierdz', $appointment->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
-                                <button class="bg-[#7ac759] text-white px-4 py-1 rounded  text-sm w-full inline-flex items-center justify-center gap-1">
+                                <button class="bg-[#7ac759] text-white px-4 py-1 rounded text-sm w-full inline-flex items-center justify-center gap-1">
                                     <i data-lucide="clipboard-check" class="w-4 h-4"></i> Potwierdź
                                 </button>
                             </form>
                         </td>
                         <td class="p-2">
-    <form action="{{ route('pacjenci.odrzuc', $appointment->id) }}" method="POST">
-        @csrf
-        @method('PUT')
-        <button class="bg-[#8B5CF6]  text-white px-4 py-1 rounded hover:bg-red-700 text-sm w-full inline-flex items-center justify-center gap-1">
-            <i data-lucide="delete" class="w-4 h-4"></i> Odrzuć
-        </button>
-    </form>
-</td>
-
+                            <form action="{{ route('pacjenci.odrzuc', $appointment->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <button class="bg-[#8B5CF6] text-white px-4 py-1 rounded hover:bg-red-700 text-sm w-full inline-flex items-center justify-center gap-1">
+                                    <i data-lucide="delete" class="w-4 h-4"></i> Odrzuć
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4" class="p-4 text-center text-gray-500">Brak pacjentów do zatwierdzenia.</td>
+                        <td colspan="5" class="p-4 text-center text-gray-500">Brak pacjentów do zatwierdzenia.</td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
 
-        <!-- Tabela 2: Wszyscy pacjenci -->
+        <!-- Tabela: Wszyscy pacjenci -->
         <h2 class="text-xl font-semibold mb-3 text-red-600">Wszyscy pacjenci (Usuń)</h2>
         <table class="w-full table-auto border-collapse text-sm">
             <thead>
@@ -108,7 +106,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button style="background-color: #cb6ce6;" class="text-white px-3 py-1 rounded text-sm w-full inline-flex items-center justify-center gap-1 hover:opacity-90">
-                                    <i data-lucide="trash-2" class="w-4 h-4"></i> 
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
                                 </button>
                             </form>
                         </td>
@@ -120,6 +118,11 @@
                 @endforelse
             </tbody>
         </table>
+
+        <!-- Paginacja -->
+        <div class="mt-6">
+            {{ $appointments->appends(request()->query())->links() }}
+        </div>
     </div>
 </div>
 @endsection

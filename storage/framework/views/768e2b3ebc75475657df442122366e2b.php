@@ -63,18 +63,20 @@
                             </td>
                             <td class="px-4 py-2">
                                 <div class="flex items-center gap-2">
-                                    <a href="<?php echo e(route('vet.edytuj', $appointment->id)); ?>" class="bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700 text-sm inline-flex items-center gap-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 16 16">
-                                            <path d="M4.5 1a.5.5 0 0 1 .5.5V6a2 2 0 0 0 4 0V1.5a.5.5 0 0 1 1 0V6a3 3 0 0 1-5 2.236V9.5a4.5 4.5 0 0 0 9 0V7.5a.5.5 0 0 1 1 0v2a5.5 5.5 0 1 1-11 0v-.264A3 3 0 0 1 3 6V1.5a.5.5 0 0 1 .5-.5z"/>
-                                        </svg>
-                                        Edytuj
+                                    <a href="<?php echo e(route('vet.edytuj', $appointment->id)); ?>" class="bg-[#7ac759] text-white px-3 py-1 rounded hover:bg-[#7ac759]-700 text-sm inline-flex items-center gap-1">
+                                        <i data-lucide="edit" class="w-4 h-4"></i> Edytuj
                                     </a>
+                                    <form action="<?php echo e(route('vet.usun', $appointment->id)); ?>" method="POST" onsubmit="return confirm('Czy na pewno chcesz usunąć tę wizytę?');">
+    <?php echo csrf_field(); ?>
+    <?php echo method_field('DELETE'); ?>
+    <button class="bg-[#ee5966]  text-white px-3 py-1 rounded hover:bg-[#ee5966] text-sm inline-flex items-center gap-1">
+        <i data-lucide="trash-2" class="w-4 h-4"></i>
+    </button>
+</form>
+
                                     <?php if($appointment->prescription): ?>
                                         <a href="<?php echo e(route('vet.recepta', $appointment->id)); ?>" target="_blank" class="bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-700 text-sm inline-flex items-center gap-1">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 9V4.5A1.5 1.5 0 017.5 3h9A1.5 1.5 0 0118 4.5V9m-12 0h12a1.5 1.5 0 011.5 1.5v6A1.5 1.5 0 0118 18H6a1.5 1.5 0 01-1.5-1.5v-6A1.5 1.5 0 016 9zm3 3.75h6" />
-                                            </svg>
-                                            Receptę
+                                            <i data-lucide="printer" class="w-4 h-4"></i> Receptę
                                         </a>
                                     <?php endif; ?>
                                 </div>
@@ -87,6 +89,12 @@
                     <?php endif; ?>
                 </tbody>
             </table>
+        </div>
+
+        <!-- Paginacja -->
+        <div class="mt-6">
+            <?php echo e($appointments->appends(request()->query())->links()); ?>
+
         </div>
     </div>
 </div>
