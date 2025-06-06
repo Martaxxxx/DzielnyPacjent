@@ -43,7 +43,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php $__empty_1 = true; $__currentLoopData = $appointments->where('status', 'pending'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $appointment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <?php $__empty_1 = true; $__currentLoopData = $pendingAppointments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $appointment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                     <tr class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
                         <td class="p-2"><?php echo e($appointment->owner_name); ?></td>
                         <td class="p-2"><?php echo e($appointment->pet_name); ?></td>
@@ -90,7 +90,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php $__empty_1 = true; $__currentLoopData = $appointments->where('status', '!=', 'pending'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $appointment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <?php $__empty_1 = true; $__currentLoopData = $otherAppointments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $appointment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                     <tr class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
                         <td class="p-2"><?php echo e($appointment->owner_name); ?></td>
                         <td class="p-2"><?php echo e($appointment->pet_name); ?></td>
@@ -98,8 +98,8 @@
                         <td class="p-2"><?php echo e($appointment->phone); ?></td>
                         <td class="p-2"><?php echo e(\Carbon\Carbon::parse($appointment->appointment_date)->format('d.m.Y H:i')); ?></td>
                         <td class="p-2">
-                            <span class="<?php echo e($appointment->status === 'pending' ? 'text-yellow-600' : 'text-green-600'); ?> font-semibold">
-                                <?php echo e($appointment->status === 'pending' ? 'Oczekuje' : 'Potwierdzona'); ?>
+                            <span class="<?php echo e($appointment->status === 'confirmed' ? 'text-green-600' : 'text-red-600'); ?> font-semibold">
+                                <?php echo e($appointment->status === 'confirmed' ? 'Potwierdzona' : 'Odrzucona'); ?>
 
                             </span>
                         </td>
@@ -123,7 +123,7 @@
 
         <!-- Paginacja -->
         <div class="mt-6">
-            <?php echo e($appointments->appends(request()->query())->links()); ?>
+            <?php echo e($otherAppointments->appends(request()->query())->links()); ?>
 
         </div>
     </div>

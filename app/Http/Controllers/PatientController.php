@@ -21,14 +21,21 @@ class PatientController extends Controller
 
         $search = $request->input('search');
 
-        $appointments = Appointment::query()
-            ->when($search, function ($query, $search) {
-                return $query->where('pet_name', 'like', '%' . $search . '%');
-            })
+        // Wizyty oczekujące
+        $pendingAppointments = Appointment::query()
+            ->when($search, fn($query) => $query->where('pet_name', 'like', "%$search%"))
+            ->where('status', 'pending')
+            ->orderBy('appointment_date', 'asc')
+            ->get();
+
+        // Potwierdzone/odrzucone z paginacją
+        $otherAppointments = Appointment::query()
+            ->when($search, fn($query) => $query->where('pet_name', 'like', "%$search%"))
+            ->where('status', '!=', 'pending')
             ->orderBy('appointment_date', 'asc')
             ->paginate(10);
 
-        return view('pacjenci.index', compact('appointments', 'search'));
+        return view('pacjenci.index', compact('pendingAppointments', 'otherAppointments', 'search'));
     }
 
     /**

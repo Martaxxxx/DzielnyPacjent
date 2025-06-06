@@ -42,7 +42,7 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($appointments->where('status', 'pending') as $appointment)
+                @forelse ($pendingAppointments as $appointment)
                     <tr class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
                         <td class="p-2">{{ $appointment->owner_name }}</td>
                         <td class="p-2">{{ $appointment->pet_name }}</td>
@@ -89,7 +89,7 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($appointments->where('status', '!=', 'pending') as $appointment)
+                @forelse ($otherAppointments as $appointment)
                     <tr class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
                         <td class="p-2">{{ $appointment->owner_name }}</td>
                         <td class="p-2">{{ $appointment->pet_name }}</td>
@@ -97,8 +97,8 @@
                         <td class="p-2">{{ $appointment->phone }}</td>
                         <td class="p-2">{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('d.m.Y H:i') }}</td>
                         <td class="p-2">
-                            <span class="{{ $appointment->status === 'pending' ? 'text-yellow-600' : 'text-green-600' }} font-semibold">
-                                {{ $appointment->status === 'pending' ? 'Oczekuje' : 'Potwierdzona' }}
+                            <span class="{{ $appointment->status === 'confirmed' ? 'text-green-600' : 'text-red-600' }} font-semibold">
+                                {{ $appointment->status === 'confirmed' ? 'Potwierdzona' : 'Odrzucona' }}
                             </span>
                         </td>
                         <td class="p-2">
@@ -121,7 +121,7 @@
 
         <!-- Paginacja -->
         <div class="mt-6">
-            {{ $appointments->appends(request()->query())->links() }}
+            {{ $otherAppointments->appends(request()->query())->links() }}
         </div>
     </div>
 </div>
